@@ -1,0 +1,35 @@
+{
+  "name": "vibefield",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A local character-first advertising studio.",
+  "license": "MIT",
+  "packageManager": "npm@11.20.0",
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=11.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "start": "node scripts/start.mjs",
+    "db:migrate": "npm run db:migrate -w @vibefield/api",
+    "build:shared": "npm run build --workspace @vibefield/contracts && npm run build --workspace @vibefield/prompt",
+    "build": "npm run build:shared && npm run build --workspace @vibefield/api && npm run build --workspace @vibefield/cli && npm run build --workspace @vibefield/web",
+    "typecheck": "npm run build:shared && npm run typecheck --workspace @vibefield/contracts && npm run typecheck --workspace @vibefield/prompt && npm run typecheck --workspace @vibefield/api && npm run typecheck --workspace @vibefield/cli && npm run typecheck --workspace @vibefield/web",
+    "lint": "npm run lint --workspace @vibefield/contracts && npm run lint --workspace @vibefield/prompt && npm run lint --workspace @vibefield/api && npm run lint --workspace @vibefield/cli && npm run lint --workspace @vibefield/web",
+    "dev:api": "npm run dev --workspace @vibefield/api",
+    "dev:web": "npm run dev --workspace @vibefield/web",
+    "cli": "npm run dev --workspace @vibefield/cli --"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.5",
+    "eslint": "10.13.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2"
+  }
+}

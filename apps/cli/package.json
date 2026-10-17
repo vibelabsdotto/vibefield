@@ -1,0 +1,25 @@
+{
+  "name": "@vibefield/cli",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "vibefield": "dist/index.mjs"
+  },
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node22 --format=esm --outfile=dist/index.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint src --no-error-on-unmatched-pattern",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.mjs"
+  },
+  "dependencies": {
+    "@vibefield/contracts": "*",
+    "commander": "15.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "tsx": "4.23.15"
+  }
+}
