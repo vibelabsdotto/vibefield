@@ -48,6 +48,8 @@ Video requires both `VIBEFIELD_ALLOW_VIDEO=1` and `confirmExternal:true`. The de
 
 A process restart changes unacknowledged submissions to `needs_attention`. Acknowledged jobs resume polling. Jobs with persisted output handles resume downloads. Byte outputs are durably staged before import. Asset insertion and its job-output link commit together. Actual output dimensions, bytes, hash, requested model, reported model, and usage/provenance are retained. A missing reported model stays null; it is not inferred from the request.
 
+Provider failure metadata is stored in a `provider_failure` history event, not in downloadable results. An allowlist retains start-frame identifiers, checksums, dimensions, MIME types, byte counts, adaptation flag and catalog timestamp, with a 4 KiB event limit. Unknown fields and raw provider bodies are dropped. Invalid metadata is marked omitted. Recording it does not reopen a terminal job or enable download recovery without actual outputs.
+
 Canceling queued work prevents submission. Canceling in-flight work only stops local processing and leaves the job requiring attention; it does not claim upstream cancellation. Resolution supports marking failed, creating a new explicit submission, resuming free polling/downloads, or verifying and attaching an async OpenRouter video ID. Attachment performs free provider verification before storing the ID. An unverifiable ID is rejected. Resubmitting an old portrait, still, or derivation after the identity changes is rejected; create a fresh generation request instead. Video keeps the selected still's historical identity provenance.
 
 ## Export and errors

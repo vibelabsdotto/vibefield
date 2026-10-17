@@ -15,6 +15,7 @@ import { ApiError, fail } from './errors';
 import { temporaryPath, config } from './config';
 import { downloadOutput } from './download';
 import { publicJob } from './job-view';
+import { failureProvenance } from './failure-provenance';
 
 type ProviderResult = Awaited<ReturnType<ProvidersService['generate']>>;
 type OutputHandle = { url?: string; file?: string; mime?: string; assetId?: string };
@@ -221,8 +222,11 @@ export class JobsService implements OnModuleInit, OnModuleDestroy {
           if (providerError.providerJobId) { this.checkProviderJobId(acknowledged, providerError.providerJobId); this.db.update('jobs', acknowledged.id, { providerJobId: providerError.providerJobId, updatedAt: now() }); }
         }); } catch { console.error(JSON.stringify({ code: 'ACK_PERSIST_FAILED', jobId: job.id, providerJobId: providerError.providerJobId ?? null })); }
       }
-      const current = this.db.get('jobs', job.id);
-      if (!terminalStatuses.includes(current.status)) this.db.transaction(() => {
+      const failureJobId = job.id;
+      this.db.transaction(() => {
+        const current = this.db.get('jobs', failureJobId);
+        if (providerError?.metadata) this.db.audit('runner', 'job', current.id, 'provider_failure', failureProvenance(providerError));
+        if (terminalStatuses.includes(current.status)) return;
         const knownRejected = providerError?.submissionOutcome === 'not_submitted' || providerError?.submissionOutcome === 'rejected';
         if (!current.providerJobId && !current.result && providerError?.submissionOutcome !== 'accepted') this.submissionOutcome(current.id, knownRejected ? 'rejected' : 'unknown');
         const terminalProviderFailure = !!providerError && terminalProviderCodes.includes(providerError.code);
