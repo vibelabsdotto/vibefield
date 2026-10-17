@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      VIBEFIELD_HOME: ${{ runner.temp }}/vibefield-ci
+      VIBEFIELD_HOME: ${{ github.workspace }}/.hermes/ci-data
       VIBEFIELD_ALLOW_VIDEO: '0'
       VIBEFIELD_EXPERIMENTAL_CODEX_IMAGES: '0'
       NEXT_TELEMETRY_DISABLED: '1'
