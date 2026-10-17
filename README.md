@@ -77,7 +77,7 @@ Choose supported text and video models in Settings. The catalog comes from OpenR
 
 Video sends the selected still inline with the motion prompt. There is no automatic public-media-host fallback. Provider support and the real verification status of inline frames are documented in [Providers](docs/providers.md).
 
-**Video generation is implemented but not yet verified end-to-end.** The first live OpenRouter attempt was rejected with HTTP 402 because the verification account had exhausted its credits. Image generation, reference editing and persisted image workflows were exercised with real outputs. The failed video attempt stayed visible and was not retried.
+**One OpenRouter video run has completed end-to-end**, requesting `kwaivgi/kling-v3.0-pro` with an inline selected frame. The application persisted the acknowledgement, polled completion and imported the actual MP4. Seedance 2.5 rejected the same synthetic character image under a privacy check; a catalog entry alone does not establish suitability for character work. Models never switch automatically. See [verification details](docs/verification.md) for the exact parameters, measured output and remaining limits.
 
 The video cap is persistent per data directory. A failed or ambiguous submission attempt still counts. Raising the cap is an explicit environment change, not an automatic response to failure. A local cap does not replace your provider's own spending limits.
 

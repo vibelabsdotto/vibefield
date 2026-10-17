@@ -37,7 +37,7 @@ export async function prepareStartFrame(ref: ProviderContext['refs'][number], mo
       sentMime, sentBytes: bytes.length, sentWidth, sentHeight,
       originalSha256: createHash('sha256').update(original).digest('hex'), sentSha256: createHash('sha256').update(bytes).digest('hex'),
       adaptation: adapted ? 'Auto-orient, fit inside 2048px without cropping or enlargement, flatten alpha to white, JPEG quality 85, strip metadata.' : 'Original selected-still bytes.',
-      inlineInputSupport: 'unverified', localInlineByteLimit: INLINE_BYTES_LIMIT,
+      inlineInputSupport: 'provider_dependent', localInlineByteLimit: INLINE_BYTES_LIMIT,
     } };
   } catch (error) {
     if (error instanceof ProviderError) throw error;

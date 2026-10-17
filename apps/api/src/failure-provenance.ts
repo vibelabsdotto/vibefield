@@ -16,7 +16,7 @@ const metadataSchema = z.object({
     sentWidth: quantity.optional(), sentHeight: quantity.optional(),
     originalSha256: sha256Schema.optional(), sentSha256: sha256Schema.optional(),
     localInlineByteLimit: quantity.optional(),
-    inlineInputSupport: z.literal('unverified').optional(),
+    inlineInputSupport: z.enum(['unverified', 'provider_dependent']).optional(),
   }).optional(),
 });
 

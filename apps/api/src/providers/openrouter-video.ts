@@ -7,7 +7,7 @@ import { OPENROUTER_BASE, VIDEO_BYTES_LIMIT, safeIdentifier, safeUsage, wire, wi
 import { prepareStartFrame } from './video-frame';
 
 export const VIDEO_WARNINGS = [
-  'Selected first frame is sent inline as a data URL. OpenRouter video data-URL support remains unverified until an authorized live test.',
+  'Your selected frame is sent inline to OpenRouter. Acceptance and safety rules vary by model and provider.',
   'No public upload fallback. A rejected or ambiguous submission still consumes the local submission budget.',
   'Only the selected first frame is attached, not canonical or subject-reference images. No webhook is registered.',
   'Video is not eligible for zero data retention. Provider credits and account routing permissions are required.',
@@ -124,7 +124,7 @@ export class OpenRouterVideoProvider {
           contentPath: `/api/v1/videos/${encodeURIComponent(id)}/content`, status: 'completed', warnings: VIDEO_WARNINGS,
         } };
       }
-      if (['failed', 'cancelled', 'expired'].includes(String(data.status))) throw new ProviderError(`VIDEO_${String(data.status).toUpperCase()}`, 'OpenRouter reports a terminal unsuccessful video job. Inline start-frame support is unverified. No public upload fallback or resubmission was made.', 'accepted', id);
+      if (['failed', 'cancelled', 'expired'].includes(String(data.status))) throw new ProviderError(`VIDEO_${String(data.status).toUpperCase()}`, 'OpenRouter reports a terminal unsuccessful video job. No public upload fallback or automatic resubmission was made.', 'accepted', id);
       if (data.status !== 'pending' && data.status !== 'in_progress') throw new ProviderError('VIDEO_STATUS_UNKNOWN', 'OpenRouter returned an unknown video status. Keep the job ID for manual recovery.', 'accepted', id);
       try { await delay(Math.min(POLL_INTERVAL_MS, Math.max(0, deadline - Date.now())), undefined, { signal: context.signal }); }
       catch { throw new ProviderError('PROVIDER_CANCELLED', 'Video observation cancelled locally. This does not cancel or refund upstream generation.', 'accepted', id); }

@@ -78,7 +78,7 @@ There is exactly one `POST /videos` per `generate()` invocation. It sends explic
 }
 ```
 
-The example describes the payload, not a successful generation. **OpenRouter video data-URL support remains unverified.** Public OpenRouter video examples use HTTPS image URLs. A provider may reject embedded bytes. VibeField never uploads the image to a public host or retries a different input mode after rejection.
+One end-to-end run on 2026-10-17 completed with an unchanged PNG data URL and requested model `kwaivgi/kling-v3.0-pro`. A separate Seedance 2.5 attempt rejected the same synthetic character image under `InputImageSensitiveContentDetected.PrivacyInformation`. Acceptance and safety rules vary by model and provider. VibeField never uploads the image to a public host, alters it after rejection, switches models or resubmits automatically. Changing the model requires a new explicit job.
 
 Frame preparation has a conservative local maximum of 4 MiB and 2048px on the longest edge. These are application limits, not universal OpenRouter claims. The upstream Seedance documentation describes image inputs below 30 MB, dimensions between 300 and 6000px, and aspect ratios between 0.4 and 2.5. Seedance inputs outside the minimum/ratio envelope are rejected without stretching or cropping. Oversized images are auto-oriented, fit inside 2048px without enlargement, flattened to white if needed, and encoded as JPEG at quality 85. If the result remains too large it is rejected locally. Original and sent checksums, byte sizes, dimensions, MIME types and the adaptation description are recorded. Original assets remain immutable.
 
@@ -90,7 +90,7 @@ All HTTP bodies have streamed byte bounds and overall deadlines. Raw provider er
 
 ## Verification and remaining limits
 
-See [Verification status](verification.md) for the completed image and browser workflows, observed one-image limit and the OpenRouter billing blocker.
+See [Verification status](verification.md) for the completed image and browser workflows, observed one-image limit and the successful OpenRouter video run.
 
 The API package typecheck, Nest build and ESLint all passed with installed dependencies. The compiled adapters' live public discovery returned 30 unique video models and 470 unique text models. The live compatibility default was `bytedance/seedance-2.0-fast`; `openai/gpt-4.1-mini` was present in the text catalog. Both provider descriptions passed the shared `providerStatusSchema`, and a second description read made zero new catalog requests. The probe explicitly disabled Codex and removed credential variables in its own child process before invoking descriptions. It performed only two unauthenticated public catalog GETs and no paid requests.
 
